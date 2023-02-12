@@ -2,6 +2,64 @@
 
 > A repo for a WPF lecture done for LABTECH Ltd. 2023-02.
 
+## About Windows Desktop App development
+
+![Desktop UI frameworks](assets/2023-02-11-18-23-31.png)
+
+- XAML is used in WPF, UWP, WinUI, Xamarin.Forms, MAUI and others.
+- Windows Forms (_WinForms_) use a form designer in Visual Studio.
+- UWP (_WinForms_) should not be used for new apps.
+
+![Primary difference between WPF & WinForms](assets/2023-02-11-18-57-55.png)
+
+- WinForms have problems migrations to the latest .NET versions.
+- WinForms are suitable for a small, forms-like application with short time span.
+
+![Understating of UWP hosting model](assets/2023-02-11-18-48-07.png)
+
+### Windows 10/11 hosting model
+
+- Two hosts Win32/UWP
+- Win32 App can do whatever the app wants.
+- UWP is a sandbox and it must declare in manifest what permissions requires.
+
+![Overview of Windows App development](assets/2023-02-11-18-18-00.png)
+
+- UWP is tightly coupled to XAML controls and UI framework within Windows. You can't deploy a new app until you deploy a new version of Windows. Not usable model for business applications.
+- WinUI 2.x uses NuGet for XAML controls decoupling part of UI from Windows.
+- WinUI 3 decouples even UI framework from Windows 10 using NuGet.
+- WinUI 3 uses Win32 hosting model.
+- XAML UI Framework NuGet from WinUI 3 can't be used in UWP apps.
+- UWP is not important anymore.
+- UWP contains modern WinRT (_Windows RunTime API_) that can be called from WinUI, WPF & WinForm.
+
+![Overview for .NET 6](assets/2023-02-11-19-50-44.png)
+
+- Mono for Android -> Xamarin.Android -> .NET for Android
+- MonoTouch -> Xamarin.iOS -> .NET for iOS
+- Xamarin.Forms -> MAUI
+- MAUI is an abstraction platform to target different platforms.
+- MAUI targets WinUI on Windows.
+
+![Blazor Desktop App](assets/2023-02-11-19-56-26.png)
+
+## Non-Microsoft Open-Source options
+
+![Avalonia](assets/2023-02-11-20-02-48.png)
+![Uno Platform](assets/2023-02-11-20-05-44.png)
+
+- Avalon was a code name for WPF.
+- UNO is WinUI bridge.
+- UNO is targets WinUI (_originally UWP Apps_) interfaces and mirrors WinUI types for other target platforms.
+- In Avalonia, in Uno, a developer can use WPF, WinUI skills, respectively.
+
+## How to choose?
+
+- WinUI should be first choice on Windows 10/11.
+- Windows => Is all required controls supported in WinUI? Yes, => WinUI, WPF otherwise.
+- Windows 7? => WPF
+- Something else => MAUI, Avalonia, or Uno.
+
 ## About WPF
 
 - A mature UI framework for desktop apps based on .NET, C# & XAML.
@@ -94,10 +152,29 @@ The `<Button.Content>` doesn't have to be specified. It is the default property 
 ![Grid sizing with stars](assets/2023-02-11-09-51-45.png)
 ![Grid mix sizing](assets/2023-02-11-09-53-40.png)
 
-- Auto = equal to highest element in row
+- Auto = equal to highest/widest element in row. If no element inside, 0 width/height.
 - Star = auto size, a leftover space, the default value for rows, columns.
 
 ![Grid item positioning](asserts/GridAnimation.gif)
+
+We can change the code in C#. We have to work with static Dependency properties, or (_better way_) static methods.
+
+```csharp
+private void ButtonMoveNavigation_Click(object sender, RoutedEventArgs e)
+{
+    //var column = (int)customerListGrid.GetValue(Grid.ColumnProperty);
+    //var newColumn = column == 0 ? 2 : 0;
+    //customerListGrid.SetValue(Grid.ColumnProperty, newColumn);
+
+    var column = Grid.GetColumn(customerListGrid);
+    var newColumn = column == 0 ? 2 : 0;
+    Grid.SetColumn(customerListGrid, newColumn);
+}
+```
+
+### Setting Grid properties to objects in a Grid
+
+![Grid Row manipulation](assets/2023-02-11-16-55-53.png)
 
 ## Canvas
 
@@ -121,4 +198,127 @@ The `<Button.Content>` doesn't have to be specified. It is the default property 
     <MenuItem Header="_Products"/>
     </MenuItem>
 </Menu>
+```
+
+## User control
+
+- Custom controls.
+- Usually, saves parts of XAML syntax to a separate, reusable components.
+- We have to add corresponding XML namespace instruction on top of our a window XAML file.
+
+## XAML namespaces
+
+- Brings assemblies to actual working space.
+- `xmlns=".../2006/xaml/presentation/"` is the default namespace that is consisted from several assemblies decorated by `[assembly: XmlnsDefinitionAttribute("scheme", "assembly name")]`
+- `xmlns:d="...blend/2008/"` is design namespace with attributes useful during design time.
+- `mc:Ignorable="d"` says: Ignore namespace "d" in runtime.
+
+## Data Binding
+
+- Enables, e.g., coupling of element properties using marku extensions.
+- Markup extension: a syntax in `{ }`
+- 4 resources of binding source: Element, StaticResource, Relative resource and DataContext.
+- `Text="{Binding ElementName=somethingNamedByX:NameAttribute, Path=NavigationProperty.SubProperty}"`
+- `Text="{Binding Source={StaticResource someResource}}"`
+- `Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}"`
+- Mode: OneWay, TwoWay, OneTime
+- UpdateSourceTrigger: A trigger for a change.
+- If `Path` is the first argument assigned, it can be omitted, `{Binding Path=Customers}` => `{Binding Customers}`.
+- DataContext is our ViewModel, a place where we have data for UI and UI logic.
+
+### How DataContext works
+
+```xml
+<Grid DataContext="LAB">
+    <StackPanel>
+        <TextBlock Text="{Binding}"/> <!--Set to LAB-->
+    </StackPanel>
+</Grid>
+```
+
+```xml
+<Grid DataContext="LAB">
+    <StackPanel DataContext="TECH">
+        <TextBlock Text="{Binding}"/> <!--Set to TECH-->
+    </StackPanel>
+</Grid>
+```
+
+## MVVM
+
+- Model-View-ViewModel
+- Main design pattern used in WPF.
+- View: `*.xaml` + `*.xaml.cs`
+- Model: A business entity.
+- ViewModel: Holds a state of model in UI.
+- ViewModel is UI independent.
+- This pattern increases Maintainability & Testability
+
+![MVVM](assets/2023-02-11-18-06-02.png)
+
+```csharp
+public class ViewModelBase : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void RaisePropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventHandlerArgs(propertyName))
+}
+```
+
+## IValueConverter
+
+- Used for converting object in Data Binding.
+- XAML Binding Failures window in Visual Studio.
+- Converter must be a static resource.
+
+```xml
+<SomeUIElement.Resources>
+    <converter:ClassNameOfTheConverter x:Key="ConverterNameInXAML"/>
+</SomeUIElement.Resources>
+<!-- Some XAML-->
+<Grid Grid.Column="{Binding SomeValueFromViewModel, Converter={StaticResource ConverterNameInXAML}}">
+```
+
+## Command
+
+- An implementation of `System.Windows.Input.ICommand` interface.
+- More separation of UI logic from UIElements to view models.
+- A replace for e.g., OnClick event handlers on buttons.
+- Instead of button click event handlers, we can define data binding to view model properties of `ICommand`.
+- DelegatedCommand: A command that executes some method.
+
+![Commands and MVVM](assets/2023-02-11-23-10-54.png)
+
+```csharp
+public class DelegateCommand : ICommand
+{
+    private readonly Action<object?> _execute;
+    private readonly Func<object?, bool>? _canExecute;
+
+    public DelegateCommand(Action<object?> execute, Func<object?,bool>? canExecute = null)
+    {
+        ArgumentNullException.ThrowIfNull(execute);
+        _execute = execute;
+        _canExecute = canExecute;
+    }
+
+    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+
+    public event EventHandler? CanExecuteChanged;
+
+    /// <Summary>
+    /// The _canExecute is null when command can be executed every single time, so default value is null that case.
+    /// </Summary>
+    public bool CanExecute(object? parameter) => _canExecute is null || _canExecute(parameter);
+
+    public void Execute(object? parameter) => _execute(parameter);
+}
+```
+
+```xml
+
+```
+
+```csharp
+
 ```
