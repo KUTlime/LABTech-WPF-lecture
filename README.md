@@ -17,7 +17,7 @@
 
 ### Windows 10/11 hosting model
 
-- Two hosts Win32/UWP
+- Two hosts Win32 & UWP.
 - Win32 App can do whatever the app wants.
 - UWP is a sandbox and it must declare in manifest what permissions requires.
 
@@ -33,13 +33,16 @@
 
 ![Overview for .NET 6](assets/2023-02-11-19-50-44.png)
 
-- Mono for Android -> Xamarin.Android -> .NET for Android
-- MonoTouch -> Xamarin.iOS -> .NET for iOS
-- Xamarin.Forms -> MAUI
+- Mono for Android -> Xamarin.Android -> .NET for Android.
+- MonoTouch -> Xamarin.iOS -> .NET for iOS.
+- Xamarin.Forms -> MAUI.
 - MAUI is an abstraction platform to target different platforms.
 - MAUI targets WinUI on Windows.
 
 ![Blazor Desktop App](assets/2023-02-11-19-56-26.png)
+
+- Blazor desktop App is a relatively new, exotic approach to building of a desktop app.
+- It is based on the containerized web application running in `BlazorWebView` on top of regular .NET desktop runtime (_instead of original WASM_).
 
 ## Non-Microsoft Open-Source options
 
@@ -54,9 +57,9 @@
 ## How to choose?
 
 - WinUI should be first choice on Windows 10/11.
-- Windows => Is all required controls supported in WinUI? Yes, => WinUI, WPF otherwise.
+- Windows => Is all required controls supported in WinUI? Yes => WinUI, WPF otherwise.
 - Windows 7? => WPF
-- Something else => MAUI, Avalonia, or Uno.
+- Something else => MAUI, Avalonia, or Uno (_and brace  yourself for an impact_).
 
 ## About WPF
 
