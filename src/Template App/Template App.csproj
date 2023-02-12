@@ -16,7 +16,6 @@
       <Folder Include="Controls" />
       <Folder Include="Converters" />
       <Folder Include="Images" />
-      <Folder Include="ViewModels" />
       <Folder Include="Views" />
     </ItemGroup>
 
