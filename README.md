@@ -155,7 +155,7 @@ The `<Button.Content>` doesn't have to be specified. It is the default property 
 - Auto = equal to highest/widest element in row. If no element inside, 0 width/height.
 - Star = auto size, a leftover space, the default value for rows, columns.
 
-![Grid item positioning](asserts/GridAnimation.gif)
+![Grid item positioning](assets/GridAnimation.gif)
 
 We can change the code in C#. We have to work with static Dependency properties, or (_better way_) static methods.
 
