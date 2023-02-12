@@ -479,6 +479,7 @@ public MainWindow()
 - By implementation of `IDataErrorInfo`, `<TextBox Text="{Binding SomeProperty, ValidatesOnDataErrors=True}"/>`
 - By implementation of `INotifyDataErrorInfo`, no need to set anything, it is the default. Explicit set: `<TextBox Text="{Binding SomeProperty, ValidatesOnNotifyDataErrors=True}"/>`
 - A custom validation rule to data binding validation properties. Other ways does this behind the scene.
+- By setting: `ValidatesOnNotifyDataErrors=False` we turn off the validation errors on `UIElement`.
 
 ### Example of generic `INotifyDataErrorInfo` implementation
 
@@ -531,6 +532,18 @@ public class ValidationViewModelBase : ViewModelBase, INotifyDataErrorInfo
         }
     }
 }
+```
+
+### Styling validation error
+
+```xml
+<!-- We apply this in style -->
+<Style.Triggers>
+    <Trigger Property="Validation.HasError" Value="True">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="Tooltip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+    </Trigger>
+</Style.Triggers>
 ```
 
 ```xml
