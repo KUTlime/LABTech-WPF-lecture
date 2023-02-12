@@ -279,6 +279,16 @@ public class ViewModelBase : INotifyPropertyChanged
 <Grid Grid.Column="{Binding SomeValueFromViewModel, Converter={StaticResource ConverterNameInXAML}}">
 ```
 
+### Default Visibility convertor
+
+```xml
+<Application.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+</Application.Resources>
+<!-- Some XAML somewhere-->
+<Grid Grid.Column="{Binding SomeBoolValueFromViewModel, Converter={StaticResource BooleanToVisibilityConverter}}">
+```
+
 ## Command
 
 - An implementation of `System.Windows.Input.ICommand` interface.
@@ -314,6 +324,96 @@ public class DelegateCommand : ICommand
     public void Execute(object? parameter) => _execute(parameter);
 }
 ```
+
+## Resources
+
+- A dictionary of resources.
+- Every resource needs a definition of `x:Key="SomeUniqueKey"`.
+- Hierarchical structure, resources are searched upwards (_like_`DataContext`).
+- Can be application wide.
+
+```xml
+<SomeUIElement.Resources>
+    <SolidColorBrush x:Key="CompanyColor1" Color="#FFF000"/>
+    <SolidColorBrush x:Key="CompanyColor2" Color="#000FFF"/>
+</SomeUIElement.Resources>
+```
+
+```xml
+<TextBlock Foreground="{StaticResource CompanyColor1}">
+```
+
+### Application wide
+
+```xml
+<Application.Resources>
+    <SolidColorBrush x:Key="CompanyColor1" Color="#FFF000"/>
+    <SolidColorBrush x:Key="CompanyColor2" Color="#000FFF"/>
+</Application.Resources>
+```
+
+- Normally, we create `Resources` directory and organize the resources there based on type and destination.
+- We create a WPF ResourceDictionary inside the `Resources` directory.
+- We link those Resources to the App, a window, or a control.
+- We need to merge multiple resource dictionaries.
+
+```xml
+<Application.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary = Source="/Resources/Brushes.xaml"/>
+            <ResourceDictionary = Source="/Resources/Styles.xaml"/>
+            <ResourceDictionary = Source="/Resources/Converters.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+</Application.Resources>
+```
+
+## Data Templates
+
+- The class `ContentControl` defines property `Content` and `ContentTemplate`.
+- `Content` accepts `object` (`System.Object`).
+- Button, checkbox, window inherits from `ContentControl`.
+- If `Content` is `UIElement`, it is rendered.
+- If `Content` is something else, `ToString()` method is called. An arbitrary TextBlock UIElement is created behind the scene to display the string from `ToString()`.
+- `DataTemplate` is used to control the output to UI. It is assigned to `ContentTemplate`.
+- We bind a model to `Content`.
+- `ItemsControl` has similar behavior. It defines `ItemsSource` and `ItemTemplate` to control the output of the items to UI.
+- There implicit and explicit templates.
+- Explicit templates defines `x:Key=""` attribute and they are assigned directly.
+
+### Implicit data template
+
+- A template assigned automatically based on target view model type.
+
+```xml
+<DataTemplate DataType="{x:Type viewModel:SomeViewModelClass}">
+    <view: CustomersView/>
+</DataTemplate>
+```
+
+## Dependency Injection
+
+- We are solving complex dependency trees.
+- DI is a form of Inversion of Control.
+- Using DI follows Dependency Inversion Principle in order to have loosely coupled application.
+- Using `Microsoft.Extensions.DependencyInjection` NuGet.
+
+Simply, we want to avoid such code
+
+```csharp
+public MainWindow()
+{
+    InitializeComponent();
+    _viewModel = new MainViewModel(
+    new CustomersViewModel(new CustomerDataProvider()),
+    new ProductsViewModel());
+    DataContext = _viewModel;
+    Loaded += MainWindow_Loaded;
+}
+```
+
+- We configure services and generate a service provider in a constructor of `App.xaml.cs`.
 
 ```xml
 
