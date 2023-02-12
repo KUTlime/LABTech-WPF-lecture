@@ -13,9 +13,7 @@
 ![Primary difference between WPF & WinForms](assets/2023-02-11-18-57-55.png)
 
 - WinForms have problems migrations to the latest .NET versions.
-- WinForms are suitable for a small, forms-like application with short time span.
-
-![Understating of UWP hosting model](assets/2023-02-11-18-48-07.png)
+- WinForms are suitable for a small, forms-like application with short time span (_no ongoing development_).
 
 ### Windows 10/11 hosting model
 
@@ -23,7 +21,7 @@
 - Win32 App can do whatever the app wants.
 - UWP is a sandbox and it must declare in manifest what permissions requires.
 
-![Overview of Windows App development](assets/2023-02-11-18-18-00.png)
+![Overview of Windows App development](assets/2023-02-11-18-48-07.png)
 
 - UWP is tightly coupled to XAML controls and UI framework within Windows. You can't deploy a new app until you deploy a new version of Windows. Not usable model for business applications.
 - WinUI 2.x uses NuGet for XAML controls decoupling part of UI from Windows.
