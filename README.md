@@ -414,6 +414,60 @@ public MainWindow()
 ```
 
 - We configure services and generate a service provider in a constructor of `App.xaml.cs`.
+- We push all dependencies to the Application class.
+- We resolve dependencies there by the service provider.
+
+## Styles
+
+- Solves the problem of duplicate XAML code mostly related to styling.
+- Solves the problem of style unification.
+- Provides reusable XAML code.
+- Styles can inherit form each other.
+- There explicit & implicit styles.
+- Explicit styles declares `x:Key="SomeUniqueKey"` attribute.
+- Implicit styles declares +++++++only `TargetType="TextBox"`
+
+```xml
+<SomeUIElement.Resources>
+    <Style TargetType="TextBox" x:Key="TextBoxDefaultStyle">
+        <Setter Property="Background" Value="#555555">
+        <Setter Property="Foreground" Value="White">
+        <Setter Property="Padding" Value="5">
+    </Style>
+    <Style TargetType="TextBox" x:Key="TextBoxFancyStyle" BasedOn="{StaticResource TextBoxBaseStyle}">
+        <Setter Property="Margin" Value="5">
+    </Style>
+</SomeUIElement.Resources>
+<!--Some XAML code -->
+<TextBox Style="{StaticResource TextBoxDefaultStyle}"/>
+<TextBox Style="{StaticResource TextBoxDefaultStyle}" Foreground="Green"/> <!--Style property override-->
+```
+
+### Property Trigger style
+
+- Used for, e.g., changing a style based on focus.
+- `Trigger` checks a property value.
+- `MultiTrigger` checks multiple property values.
+- In multiple triggers targeting same property, the order of definition matters if multiple triggers are triggered.
+
+```xml
+<Style TargetType="TextBox" BasedOn="{StaticResource TextBoxBaseStyle}">
+    <Style.Triggers>
+        <Trigger Property="IsFocused" Value="True">
+            <Setter Property="Background" Value="#111111"/>
+        </Trigger>
+    </Style.Triggers>
+</Style>
+```
+
+## Custom control
+
+- User controls have hard-coded XAML look.
+- Custom controls are look less.
+- Custom controls look is defined in a `ControlTemplate`.
+- All WPF controls (_buttons, check boxes etc._) are custom controls.
+- Default template can be defined by the `Template` property.
+- By adjusting templates, we can modify properties that can't be modified directly.
 
 ```xml
 
