@@ -510,13 +510,13 @@ public class ValidationViewModelBase : ViewModelBase, INotifyDataErrorInfo
 
         if (!_errorsByPropertyName.ContainsKey(propertyName))
         {
-        _errorsByPropertyName[propertyName] = new List<string>();
+            _errorsByPropertyName[propertyName] = new List<string>();
         }
         if (!_errorsByPropertyName[propertyName].Contains(error))
         {
-        _errorsByPropertyName[propertyName].Add(error);
-        OnErrorsChanged(new DataErrorsChangedEventArgs(propertyName));
-        RaisePropertyChanged(nameof(HasErrors));
+            _errorsByPropertyName[propertyName].Add(error);
+            OnErrorsChanged(new DataErrorsChangedEventArgs(propertyName));
+            RaisePropertyChanged(nameof(HasErrors));
         }
     }
 
@@ -526,9 +526,9 @@ public class ValidationViewModelBase : ViewModelBase, INotifyDataErrorInfo
 
         if (_errorsByPropertyName.ContainsKey(propertyName))
         {
-        _errorsByPropertyName.Remove(propertyName);
-        OnErrorsChanged(new DataErrorsChangedEventArgs(propertyName));
-        RaisePropertyChanged(nameof(HasErrors));
+            _errorsByPropertyName.Remove(propertyName);
+            OnErrorsChanged(new DataErrorsChangedEventArgs(propertyName));
+            RaisePropertyChanged(nameof(HasErrors));
         }
     }
 }
