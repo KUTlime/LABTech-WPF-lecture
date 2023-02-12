@@ -470,6 +470,69 @@ public MainWindow()
 - Default template can be defined by the `Template` property.
 - By adjusting templates, we can modify properties that can't be modified directly.
 
+![Custom Control definition](assets/CustomControl.gif)
+
+## Input validation
+
+- In Data Binding pipeline, we can validate in 4 different ways.
+- By exceptions, `<TextBox Text="{Binding SomeProperty, ValidatesOnExceptions=True}"/>`
+- By implementation of `IDataErrorInfo`, `<TextBox Text="{Binding SomeProperty, ValidatesOnDataErrors=True}"/>`
+- By implementation of `INotifyDataErrorInfo`, no need to set anything, it is the default. Explicit set: `<TextBox Text="{Binding SomeProperty, ValidatesOnNotifyDataErrors=True}"/>`
+- A custom validation rule to data binding validation properties. Other ways does this behind the scene.
+
+### Example of generic `INotifyDataErrorInfo` implementation
+
+```csharp
+public class ValidationViewModelBase : ViewModelBase, INotifyDataErrorInfo
+{
+    private readonly Dictionary<string, List<string>> _errorsByPropertyName = new();
+
+    public bool HasErrors => _errorsByPropertyName.Any();
+
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        return propertyName is not null && _errorsByPropertyName.ContainsKey(propertyName)
+        ? _errorsByPropertyName[propertyName]
+        : Enumerable.Empty<string>();
+    }
+
+    protected virtual void OnErrorsChanged(DataErrorsChangedEventArgs e)
+    {
+        ErrorsChanged?.Invoke(this, e);
+    }
+
+    protected void AddError(string error, [CallerMemberName] string? propertyName = null)
+    {
+        if (propertyName is null) return;
+
+        if (!_errorsByPropertyName.ContainsKey(propertyName))
+        {
+        _errorsByPropertyName[propertyName] = new List<string>();
+        }
+        if (!_errorsByPropertyName[propertyName].Contains(error))
+        {
+        _errorsByPropertyName[propertyName].Add(error);
+        OnErrorsChanged(new DataErrorsChangedEventArgs(propertyName));
+        RaisePropertyChanged(nameof(HasErrors));
+        }
+    }
+
+    protected void ClearErrors([CallerMemberName] string? propertyName = null)
+    {
+        if (propertyName is null) return;
+
+        if (_errorsByPropertyName.ContainsKey(propertyName))
+        {
+        _errorsByPropertyName.Remove(propertyName);
+        OnErrorsChanged(new DataErrorsChangedEventArgs(propertyName));
+        RaisePropertyChanged(nameof(HasErrors));
+        }
+    }
+}
+```
+
 ```xml
 
 ```
