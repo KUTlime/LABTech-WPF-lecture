@@ -453,3 +453,9 @@ dotnet_diagnostic.SA1652.severity = error
 dotnet_diagnostic.SX1101.severity = error
 dotnet_diagnostic.SX1309.severity = error
 dotnet_diagnostic.SX1309S.severity = error
+
+# Code Analysis Rules
+# Unnecessary call to 'Dictionary.ContainsKey(key)'
+dotnet_diagnostic.CA1853.severity = error # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca185
+# Prefer the IDictionary.TryGetValue(TKey, out TValue) method
+dotnet_diagnostic.CA1854.severity = error # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1854
