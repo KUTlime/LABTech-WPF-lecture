@@ -225,7 +225,7 @@ private void ButtonMoveNavigation_Click(object sender, RoutedEventArgs e)
 - Mode: OneWay, TwoWay, OneTime
 - UpdateSourceTrigger: A trigger for a change.
 - If `Path` is the first argument assigned, it can be omitted, `{Binding Path=Customers}` => `{Binding Customers}`.
-- DataContext is our ViewModel, a place where we have data for UI and UI logic.
+- `DataContext` is our view model, a place where we have data for UI and UI logic.
 
 ### How DataContext works
 
@@ -426,7 +426,7 @@ public MainWindow()
 - Styles can inherit form each other.
 - There explicit & implicit styles.
 - Explicit styles declares `x:Key="SomeUniqueKey"` attribute.
-- Implicit styles declares +++++++only `TargetType="TextBox"`
+- Implicit styles declares only `TargetType="TextBox"`
 
 ```xml
 <SomeUIElement.Resources>
