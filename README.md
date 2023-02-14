@@ -546,10 +546,15 @@ public class ValidationViewModelBase : ViewModelBase, INotifyDataErrorInfo
 </Style.Triggers>
 ```
 
-```xml
+## OPC UA (OLE for Process Control)
 
-```
+* A client-server architecture.
+* A server collects data from devices, or clients.
+* A client consumes data from a server.
 
-```csharp
+## OPC UA NuGets for building applications
 
-```
+* [Official NuGet Package](https://github.com/OPCFoundation/UA-.NETStandard) + [Samples](https://github.com/OPCFoundation/UA-.NETStandard-Samples)
+* [Opc.UaFx.Client from Traeger.de](https://www.nuget.org/packages/Opc.UaFx.Client) + [Client guide](https://docs.traeger.de/en/software/sdk/opc-ua/net/client.development.guide) + [Server guide](https://docs.traeger.de/en/software/sdk/opc-ua/net/server.development.guide)
+* [Opc.UaFx.Advanced from Traeger.de](https://www.nuget.org/packages/Opc.UaFx.Advanced) + [Client guide](https://docs.traeger.de/en/software/sdk/opc-ua/net/client.development.guide) + [Server guide](https://docs.traeger.de/en/software/sdk/opc-ua/net/server.development.guide)
+* [Generic NuGet package search](https://www.nuget.org/packages?q=OPC.UA)
