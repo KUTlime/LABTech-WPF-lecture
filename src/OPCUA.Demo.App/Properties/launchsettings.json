@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "OPCUA.Demo.App (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "OPCUA.Demo.App (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}

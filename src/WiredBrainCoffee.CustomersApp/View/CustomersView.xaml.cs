@@ -1,15 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using WiredBrainCoffee.CustomersApp.Data;
-using WiredBrainCoffee.CustomersApp.ViewModel;
+﻿using System.Windows.Controls;
 
-namespace WiredBrainCoffee.CustomersApp.View
+namespace WiredBrainCoffee.CustomersApp.View;
+
+/// <summary>
+/// Some comment.
+/// </summary>
+public partial class CustomersView : UserControl
 {
-  public partial class CustomersView : UserControl
-  {
-    public CustomersView()
-    {
-      InitializeComponent();
-    }
-  }
+    public CustomersView() => InitializeComponent();
 }
