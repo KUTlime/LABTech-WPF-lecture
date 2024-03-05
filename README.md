@@ -216,7 +216,7 @@ private void ButtonMoveNavigation_Click(object sender, RoutedEventArgs e)
 
 ## Data Binding
 
-- Enables, e.g., coupling of element properties using marku extensions.
+- Enables, e.g., coupling of element properties using markup extensions.
 - Markup extension: a syntax in `{ }`
 - 4 resources of binding source: Element, StaticResource, Relative resource and DataContext.
 - `Text="{Binding ElementName=somethingNamedByX:NameAttribute, Path=NavigationProperty.SubProperty}"`
