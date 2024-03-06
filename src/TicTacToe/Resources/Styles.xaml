@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness
+        x:Key="DefaultMargin"
+        Bottom="15"
+        Left="15"
+        Right="15"
+        Top="15" />
+    <Style x:Key="BoardCell" TargetType="Button">
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="FontSize" Value="64" />
+    </Style>
+</ResourceDictionary>
