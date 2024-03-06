@@ -216,7 +216,7 @@ private void ButtonMoveNavigation_Click(object sender, RoutedEventArgs e)
 
 ## Data Binding
 
-- Enables, e.g., coupling of element properties using marku extensions.
+- Enables, e.g., coupling of element properties using markup extensions.
 - Markup extension: a syntax in `{ }`
 - 4 resources of binding source: Element, StaticResource, Relative resource and DataContext.
 - `Text="{Binding ElementName=somethingNamedByX:NameAttribute, Path=NavigationProperty.SubProperty}"`
@@ -292,7 +292,7 @@ public class ViewModelBase : INotifyPropertyChanged
 
 ## Command
 
-- An implementation of `System.Windows.Input.ICommand` interface.
+- An implementation of `System.Windows.Input.ICommand` [interface](https://learn.microsoft.com/en-us/dotnet/api/system.windows.input.icommand?view=net-8.0).
 - More separation of UI logic from UIElements to view models.
 - A replace for e.g., OnClick event handlers on buttons.
 - Instead of button click event handlers, we can define data binding to view model properties of `ICommand`.
