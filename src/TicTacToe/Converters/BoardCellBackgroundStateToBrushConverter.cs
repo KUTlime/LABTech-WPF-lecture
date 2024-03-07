@@ -13,6 +13,7 @@ public class BoardCellBackgroundStateToBrushConverter : IValueConverter
             ? state switch
             {
                 BoardCellBackgroundState.WinMove => Brushes.Green,
+                BoardCellBackgroundState.NoWin => Brushes.Red,
                 BoardCellBackgroundState.Normal => Application.Current.Resources["DefaultButtonBackground"],
                 _ => Binding.DoNothing,
             }

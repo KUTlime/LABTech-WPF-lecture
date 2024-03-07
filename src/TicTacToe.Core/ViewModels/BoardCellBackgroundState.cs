@@ -4,4 +4,5 @@ public enum BoardCellBackgroundState
 {
     Normal,
     WinMove,
+    NoWin,
 }

@@ -8,7 +8,8 @@ public class MainWindowViewModel : ViewModelBase
     private static readonly char[] _playersMarks = ['⭕', '❌'];
     private readonly char?[,] _boardState = new char?[3, 3];
     private BoardCellColors _boardCellColors;
-    private bool _gameInProgress;
+    private bool _gameInProgress = true;
+    private bool _showSettings;
     private char? _winner;
     private byte _turnCounter;
     private int _playerStartingPosition;
@@ -70,10 +71,10 @@ public class MainWindowViewModel : ViewModelBase
 
     public bool SettingsEnabled
     {
-        get => !_gameInProgress;
+        get => _showSettings;
         set
         {
-            _gameInProgress = !value;
+            _showSettings = !value;
             RaisePropertyChanged();
         }
     }
@@ -190,18 +191,27 @@ public class MainWindowViewModel : ViewModelBase
 
     private void CellUpdatedCommand(byte[] coordinates)
     {
-        if (_boardState[coordinates[0], coordinates[1]] is null)
+        if (_boardState[coordinates[0], coordinates[1]] is null && GameInProgress)
         {
             _boardState[coordinates[0], coordinates[1]] = GetPlayerCharacter();
             UpdateLabel(coordinates);
 
             if (IsThereAWinner())
             {
-                UpdateColors(coordinates);
                 GameInProgress = false;
                 SettingsEnabled = true;
                 Winner = GetWinner()[0];
                 Notes = GetWinner();
+                return;
+            }
+
+            if (TurnCounter == 8)
+            {
+                BoardCellColors = BoardCellColors.NoWinBoardCellState();
+                GameInProgress = false;
+                SettingsEnabled = true;
+                Notes = "Nobody won";
+                return;
             }
 
             GameInProgress = true;
@@ -213,11 +223,13 @@ public class MainWindowViewModel : ViewModelBase
 
     private void ResetBoardCommand(object? obj)
     {
-        GameInProgress = false;
+        GameInProgress = true;
         SettingsEnabled = true;
         ResetBoardState();
+        BoardCellColors = new BoardCellColors();
         SetStartingPlayer();
         TurnCounter = 0;
+        Winner = null;
         Label00 = string.Empty;
         Label01 = string.Empty;
         Label02 = string.Empty;
@@ -255,15 +267,70 @@ public class MainWindowViewModel : ViewModelBase
         _ => string.Empty,
     };
 
-    private bool IsThereAWinner() => _boardState switch
+    private bool IsThereAWinner()
     {
-        { [], [], [] } => true,
-        _ => false,
-    };
+        if (_boardState[0, 0] is not null && _boardState[0, 0] == _boardState[1, 1] && _boardState[1, 1] == _boardState[2, 2])
+        {
+            _winner = _boardState[0, 0];
+            UpdateColors([[0, 0], [1, 1], [2, 2]]);
+            return true;
+        }
 
-    private string GetWinner() => "X wins!";
+        if (_boardState[0, 2] is not null && _boardState[0, 2] == _boardState[1, 1] && _boardState[1, 1] == _boardState[2, 0])
+        {
+            _winner = _boardState[0, 2];
+            UpdateColors([[0, 2], [1, 1], [2, 0]]);
+            return true;
+        }
 
-    private void UpdateColors(byte[] coordinates) => BoardCellColors = BoardCellColors[coordinates];
+        if (_boardState[0, 0] is not null && _boardState[0, 0] == _boardState[1, 0] && _boardState[1, 0] == _boardState[2, 0])
+        {
+            _winner = _boardState[0, 0];
+            UpdateColors([[0, 0], [1, 0], [2, 0]]);
+            return true;
+        }
+
+        if (_boardState[0, 0] is not null && _boardState[0, 0] == _boardState[0, 1] && _boardState[0, 1] == _boardState[0, 2])
+        {
+            _winner = _boardState[0, 0];
+            UpdateColors([[0, 0], [0, 1], [0, 2]]);
+            return true;
+        }
+
+        if (_boardState[2, 0] is not null && _boardState[2, 0] == _boardState[2, 1] && _boardState[2, 1] == _boardState[2, 2])
+        {
+            _winner = _boardState[2, 0];
+            UpdateColors([[2, 0], [2, 1], [2, 2]]);
+            return true;
+        }
+
+        if (_boardState[0, 2] is not null && _boardState[0, 2] == _boardState[1, 2] && _boardState[1, 2] == _boardState[2, 2])
+        {
+            _winner = _boardState[0, 2];
+            UpdateColors([[0, 2], [1, 2], [2, 2]]);
+            return true;
+        }
+
+        if (_boardState[0, 1] is not null && _boardState[0, 1] == _boardState[1, 1] && _boardState[1, 1] == _boardState[2, 1])
+        {
+            _winner = _boardState[0, 1];
+            UpdateColors([[0, 1], [1, 1], [2, 1]]);
+            return true;
+        }
+
+        if (_boardState[1, 0] is not null && _boardState[1, 0] == _boardState[1, 1] && _boardState[1, 1] == _boardState[1, 2])
+        {
+            _winner = _boardState[1, 0];
+            UpdateColors([[1, 0], [1, 1], [1, 2]]);
+            return true;
+        }
+
+        return false;
+    }
+
+    private string GetWinner() => $"{Winner} wins!";
+
+    private void UpdateColors(byte[][] coordinates) => BoardCellColors = BoardCellColors[coordinates];
 
     private void ResetBoardState()
     {
