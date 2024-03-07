@@ -44,6 +44,7 @@
                             Grid.Column="0"
                             Command="{Binding CellUpdated}"
                             Content="{Binding Label00}"
+                            Background="{Binding BoardCellColors.Color00, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">

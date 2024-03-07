@@ -7,8 +7,9 @@ public class MainWindowViewModel : ViewModelBase
 {
     private static readonly char[] _playersMarks = ['⭕', '❌'];
     private readonly char?[,] _boardState = new char?[3, 3];
+    private BoardCellColors _boardCellColors;
     private bool _gameInProgress;
-    private bool _isThereAWinner;
+    private char? _winner;
     private byte _turnCounter;
     private int _playerStartingPosition;
     private string _notes = string.Empty;
@@ -28,6 +29,7 @@ public class MainWindowViewModel : ViewModelBase
         ResetBoard = new RelayCommand(ResetBoardCommand);
         CloseCommand = new RelayCommand(CloseApplicationCommand);
         SetStartingPlayer();
+        _boardCellColors = new BoardCellColors();
     }
 
     public ICommand CellUpdated { get; set; }
@@ -76,12 +78,22 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public bool IsThereAWinner
+    public char? Winner
     {
-        get => _isThereAWinner;
+        get => _winner;
         set
         {
-            _isThereAWinner = value;
+            _winner = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public BoardCellColors BoardCellColors
+    {
+        get => _boardCellColors;
+        set
+        {
+            _boardCellColors = value;
             RaisePropertyChanged();
         }
     }
@@ -181,10 +193,20 @@ public class MainWindowViewModel : ViewModelBase
         if (_boardState[coordinates[0], coordinates[1]] is null)
         {
             _boardState[coordinates[0], coordinates[1]] = GetPlayerCharacter();
+            UpdateLabel(coordinates);
+
+            if (IsThereAWinner())
+            {
+                UpdateColors(coordinates);
+                GameInProgress = false;
+                SettingsEnabled = true;
+                Winner = GetWinner()[0];
+                Notes = GetWinner();
+            }
+
             GameInProgress = true;
             SettingsEnabled = false;
             Notes = GetNotesBasedOnTurn();
-            UpdateLabel(coordinates);
             _turnCounter += 1;
         }
     }
@@ -232,6 +254,16 @@ public class MainWindowViewModel : ViewModelBase
         [2, 2] => Label22 = GetPlayerCharacter().ToString(),
         _ => string.Empty,
     };
+
+    private bool IsThereAWinner() => _boardState switch
+    {
+        { [], [], [] } => true,
+        _ => false,
+    };
+
+    private string GetWinner() => "X wins!";
+
+    private void UpdateColors(byte[] coordinates) => BoardCellColors = BoardCellColors[coordinates];
 
     private void ResetBoardState()
     {
