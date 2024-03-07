@@ -44,7 +44,7 @@
                             Grid.Column="0"
                             Background="{Binding BoardCellColors.Color00, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label00}"
+                            Content="{Binding BoardCellLabels.Label00}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -58,7 +58,7 @@
                             Grid.Column="1"
                             Background="{Binding BoardCellColors.Color01, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label01}"
+                            Content="{Binding BoardCellLabels.Label01}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -72,7 +72,7 @@
                             Grid.Column="2"
                             Background="{Binding BoardCellColors.Color02, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label02}"
+                            Content="{Binding BoardCellLabels.Label02}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -86,7 +86,7 @@
                             Grid.Column="0"
                             Background="{Binding BoardCellColors.Color10, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label10}"
+                            Content="{Binding BoardCellLabels.Label10}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -100,7 +100,7 @@
                             Grid.Column="1"
                             Background="{Binding BoardCellColors.Color11, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label11}"
+                            Content="{Binding BoardCellLabels.Label11}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -114,7 +114,7 @@
                             Grid.Column="2"
                             Background="{Binding BoardCellColors.Color12, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label12}"
+                            Content="{Binding BoardCellLabels.Label12}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -128,7 +128,7 @@
                             Grid.Column="0"
                             Background="{Binding BoardCellColors.Color20, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label20}"
+                            Content="{Binding BoardCellLabels.Label20}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -142,7 +142,7 @@
                             Grid.Column="1"
                             Background="{Binding BoardCellColors.Color21, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label21}"
+                            Content="{Binding BoardCellLabels.Label21}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -156,7 +156,7 @@
                             Grid.Column="2"
                             Background="{Binding BoardCellColors.Color22, Converter={StaticResource BoardCellBackgroundStateToBrushConverter}}"
                             Command="{Binding CellUpdated}"
-                            Content="{Binding Label22}"
+                            Content="{Binding BoardCellLabels.Label22}"
                             Style="{StaticResource BoardCell}">
                         <Button.CommandParameter>
                             <x:Array Type="System:Byte">
@@ -167,7 +167,8 @@
                     </Button>
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings">
+            <TabItem Header="Settings"
+                     IsEnabled="{Binding SettingsEnabled}">
                 <Grid />
             </TabItem>
         </TabControl>

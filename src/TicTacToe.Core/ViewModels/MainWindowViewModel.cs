@@ -8,21 +8,13 @@ public class MainWindowViewModel : ViewModelBase
     private static readonly char[] _playersMarks = ['⭕', '❌'];
     private readonly char?[,] _boardState = new char?[3, 3];
     private BoardCellColors _boardCellColors;
+    private BoardCellLabels _boardCellLabels;
     private bool _gameInProgress = true;
-    private bool _showSettings;
+    private bool _showSettings = true;
     private char? _winner;
     private byte _turnCounter;
     private int _playerStartingPosition;
     private string _notes = string.Empty;
-    private string _label00 = string.Empty;
-    private string _label01 = string.Empty;
-    private string _label02 = string.Empty;
-    private string _label10 = string.Empty;
-    private string _label11 = string.Empty;
-    private string _label12 = string.Empty;
-    private string _label20 = string.Empty;
-    private string _label21 = string.Empty;
-    private string _label22 = string.Empty;
 
     public MainWindowViewModel()
     {
@@ -31,6 +23,7 @@ public class MainWindowViewModel : ViewModelBase
         CloseCommand = new RelayCommand(CloseApplicationCommand);
         SetStartingPlayer();
         _boardCellColors = new BoardCellColors();
+        _boardCellLabels = new BoardCellLabels();
     }
 
     public ICommand CellUpdated { get; set; }
@@ -74,7 +67,7 @@ public class MainWindowViewModel : ViewModelBase
         get => _showSettings;
         set
         {
-            _showSettings = !value;
+            _showSettings = value;
             RaisePropertyChanged();
         }
     }
@@ -99,92 +92,12 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public string Label00
+    public BoardCellLabels BoardCellLabels
     {
-        get => _label00;
+        get => _boardCellLabels;
         set
         {
-            _label00 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label01
-    {
-        get => _label01;
-        set
-        {
-            _label01 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label02
-    {
-        get => _label02;
-        set
-        {
-            _label02 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label10
-    {
-        get => _label10;
-        set
-        {
-            _label10 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label11
-    {
-        get => _label11;
-        set
-        {
-            _label11 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label12
-    {
-        get => _label12;
-        set
-        {
-            _label12 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label20
-    {
-        get => _label20;
-        set
-        {
-            _label20 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label21
-    {
-        get => _label21;
-        set
-        {
-            _label21 = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    public string Label22
-    {
-        get => _label22;
-        set
-        {
-            _label22 = value;
+            _boardCellLabels = value;
             RaisePropertyChanged();
         }
     }
@@ -194,7 +107,7 @@ public class MainWindowViewModel : ViewModelBase
         if (_boardState[coordinates[0], coordinates[1]] is null && GameInProgress)
         {
             _boardState[coordinates[0], coordinates[1]] = GetPlayerCharacter();
-            UpdateLabel(coordinates);
+            BoardCellLabels = BoardCellLabels[coordinates, GetPlayerCharacter()];
 
             if (IsThereAWinner())
             {
@@ -227,18 +140,10 @@ public class MainWindowViewModel : ViewModelBase
         SettingsEnabled = true;
         ResetBoardState();
         BoardCellColors = new BoardCellColors();
+        BoardCellLabels = new BoardCellLabels();
         SetStartingPlayer();
         TurnCounter = 0;
         Winner = null;
-        Label00 = string.Empty;
-        Label01 = string.Empty;
-        Label02 = string.Empty;
-        Label10 = string.Empty;
-        Label11 = string.Empty;
-        Label12 = string.Empty;
-        Label20 = string.Empty;
-        Label21 = string.Empty;
-        Label22 = string.Empty;
     }
 
     private void ResetSettingsCommand(object? obj)
@@ -252,20 +157,6 @@ public class MainWindowViewModel : ViewModelBase
         _ = obj;
         _ = obj;
     }
-
-    private void UpdateLabel(byte[] coordinates) => _ = coordinates switch
-    {
-        [0, 0] => Label00 = GetPlayerCharacter().ToString(),
-        [0, 1] => Label01 = GetPlayerCharacter().ToString(),
-        [0, 2] => Label02 = GetPlayerCharacter().ToString(),
-        [1, 0] => Label10 = GetPlayerCharacter().ToString(),
-        [1, 1] => Label11 = GetPlayerCharacter().ToString(),
-        [1, 2] => Label12 = GetPlayerCharacter().ToString(),
-        [2, 0] => Label20 = GetPlayerCharacter().ToString(),
-        [2, 1] => Label21 = GetPlayerCharacter().ToString(),
-        [2, 2] => Label22 = GetPlayerCharacter().ToString(),
-        _ => string.Empty,
-    };
 
     private bool IsThereAWinner()
     {
