@@ -15,7 +15,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Image Source="assets/Magnifier.jpg"
-               Visibility="{Binding IsImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+               Visibility="{Binding IsImageVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Grid.Column="1"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"

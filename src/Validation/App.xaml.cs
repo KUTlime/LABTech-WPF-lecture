@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TicTacToe;
+namespace Validation;
 
 /// <summary>
 /// Interaction logic for App.xaml.
